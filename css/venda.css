@@ -1,0 +1,58 @@
+.corpo{
+	width: 1200px;
+	margin: 0 auto;
+}
+.corpo1{
+	width: 1250px;
+	background-color: rgb(30 25 44);
+    margin: 0 auto;
+}
+.x{
+	border: solid darkgray 2px;
+	background-color: rgb(25 25 25);
+	 font-weight: bold;
+}
+td{
+	border: solid darkgray 1px;
+}
+.imgCliente{
+	width: 15px;
+	height: 15px;
+}
+#legenda{
+    font-family: verdana;
+	color: darkgray;
+    text-align: center;
+    padding-top: 10px;
+}
+.table{
+	color: darkgray;
+}
+#msg{
+	color: red;	
+}
+
+.icon {
+	width: 15px;
+}
+
+.area{
+	display: fixed;
+	width: 100%;
+	max-width: 350px;
+	text-align: center;
+	padding: 10px;
+	background-color: rgb(30 25 44);
+}
+#a{
+	background-color: rgb(21 21 21);
+    margin: 0 auto;
+}
+#area{
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	
+}
