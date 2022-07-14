@@ -21,5 +21,5 @@
 	include_once "../include/desconecta.php";
 	
 	// Redireciona para a listagem de livros
-	header("Location: ../pags/listaClientes.php");
+	header("Location: ../pags/listaProdutos.php");
 ?>

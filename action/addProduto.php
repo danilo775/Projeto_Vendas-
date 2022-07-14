@@ -2,28 +2,29 @@
 	session_start();
 	include_once "../include/conecta.php";
 
-		if(isset($_REQUEST['descricao']) && isset($_REQUEST['preco_custo']) && isset($_REQUEST['preco_vista']) && isset($_REQUEST['preco_prazo'])  && isset($_REQUEST['quantidade'])){
-			$descricao = $_REQUEST['descricao'];
-			
-			$preco_custo = $_REQUEST["preco_custo"];
-			$preco_custo = str_replace(".", "", $preco_custo);
-			$preco_custo = str_replace(",", ".", $preco_custo);
-		
-			$preco_vista = $_REQUEST["preco_vista"];
-			$preco_vista = str_replace(".", "", $preco_vista);
-			$preco_vista = str_replace(",", ".", $preco_vista);
-		
-			$preco_prazo = $_REQUEST["preco_prazo"];
-			$preco_prazo = str_replace(".", "", $preco_prazo);
-			$preco_prazo = str_replace(",", ".", $preco_prazo);
+	header("Content-type: application/json");
+	$produto = json_decode(file_get_contents("php://input"));
 
-			$quantidade = $_REQUEST['quantidade'];
+		if(isset($produto->descricao) && isset($produto->preco_custo) && isset($produto->preco_vista) && 
+		isset($produto->preco_prazo)  && isset($produto->quantidade)){
+
+			
+
+			$produto->preco_custo = str_replace(".", "", $produto->preco_custo);
+			$produto->preco_custo = str_replace(",", ".", $produto->preco_custo);
+		
+			$produto->preco_vista = str_replace(".", "", $produto->preco_vista);
+			$produto->preco_vista = str_replace(",", ".", $produto->preco_vista);
+		
+			$produto->preco_prazo = str_replace(".", "", $produto->preco_prazo);
+			$produto->preco_prazo = str_replace(",", ".", $produto->preco_prazo);
+
 			
 			$usuario = $_SESSION['codigo']; 
 
 			$prepare = pg_prepare($conecta, "Produto", "INSERT INTO produto (descricao,preco_custo,preco_vista,preco_prazo,quantidade) 
 				VALUES ($1,$2,$3,$4,$5)");
-			$result = pg_execute($conecta, "Produto", array($descricao, $preco_custo, $preco_vista, $preco_prazo, $quantidade));
+			$result = pg_execute($conecta, "Produto", array($produto->descricao, $produto->preco_custo, $produto->preco_vista, $produto->preco_prazo, $produto->quantidade));
 
 				if(!$result){
 					die("Falha ao adicionar Produto: " . pg_last_error());

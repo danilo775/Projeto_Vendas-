@@ -1,5 +1,5 @@
 <?php
-	
+	session_start();
 	include_once "../include/conecta.php";
 
 		if(isset($_GET['codigo'])) {
@@ -16,19 +16,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Atualiza Produto</title>
 	<link rel="stylesheet" href="../css/produto.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<script src="../js/createRequest.js"></script>
 	<script src="../js/cadastraProduto.js"></script>
 </head>
-<body id="tudo">
+<body id="w">
+	<div class="corpo1">
 	<div class="corpo">
 		<?php 	include_once "./menu.php";?>
 		<form action="../action/editaProduto.php" method="POST">
-			<legend id="legenda"> <h1>Editar dados do Produtos <h1> </legend>
+			<legend id="legenda"> <h1>Editar dados do Produtos </h1> </legend>
 
-				<input type="hidden" name="codigo" value="<?php echo $linha["codigo"]; ?>">
+				<input type="hidden" id="codigo" name="codigo" value="<?php echo $linha["codigo"]; ?>">
 
 
 				<div class="form-group">
@@ -38,17 +39,17 @@
 			<div class="row">
 				<div class="form-group col">
 					<label class="form-label">Preço de Custo</label>
-					<input type="text" name="preco_custo" class="form-control" id="preco_custo" onkeyup="formatarMoeda(this);" value="<?php echo $linha['preco_custo']; ?> ">	
+					<input type="text" name="preco_custo" class="form-control" id="preco_custo" onkeyup="formatarMoeda(this);" value="<?php echo str_replace(".", ",", $linha['preco_custo']); ?> ">	
 				</div>
 
 				<div class="form-group col">
 					<label class="form-label">Preço a Vista</label>
-					<input type="text" name="preco_vista" class="form-control" id="preco_vista" onkeyup="formatarMoeda(this);" value="<?php echo $linha['preco_vista']; ?> ">	
+					<input type="text" name="preco_vista" class="form-control" id="preco_vista" onkeyup="formatarMoeda(this);" value="<?php echo str_replace(".", ",", $linha['preco_vista']); ?> ">	
 				</div>
 
 				<div class="form-group col">
 					<label class="form-label">Preço a Prazo</label>
-					<input type="text" name="preco_prazo" class="form-control" id="preco_prazo" onkeyup="formatarMoeda(this);" value="<?php echo $linha['preco_prazo']; ?> ">	
+					<input type="text" name="preco_prazo" class="form-control" id="preco_prazo" onkeyup="formatarMoeda(this);" value="<?php echo str_replace(".", ",", $linha['preco_prazo']); ?> ">	
 				</div>
 			</div>
 			<div class="form-group col-g6">
@@ -57,12 +58,16 @@
 			</div>
 			
 			<div class="form-group" >	
-			<button type="button"  name="bt"  class="btn btn-default" id="bt"  onclick=" addProduto();">CADASTRAR </button>
+			<button type="button"  name="bt"  class="btn btn-default" id="bt"  onclick=" atualizaProduto();">ATUALIZAR </button>
 			</div>
 					<span id="msg"></span>
 				
 		</form>
-	</div>	
+		<div class="mt-5" id="footer">
+			<?php 	include_once "./footer.php";?>
+		</div>
+	</div>
+	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>		
 </body>
 </html>		

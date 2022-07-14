@@ -6,6 +6,27 @@ function formatarMoeda(i) {
 	v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
 	i.value = v;
 }
+function formataCelular(telefone){ 
+	if(telefone.value.length == 0)
+		telefone.value = '(' + telefone.value; 
+	if(telefone.value.length == 3)
+		telefone.value = telefone.value + ') '; 
+
+	if(telefone.value.length == 10)
+		telefone.value = telefone.value + '-';
+}
+
+function formataCpf(cpf){ 
+ 
+	if(cpf.value.length == 3)
+	cpf.value = cpf.value + '. '; 
+
+	if(cpf.value.length == 8)
+	cpf.value = cpf.value + '. '; 
+
+	if(cpf.value.length == 13)
+	cpf.value = cpf.value + '-';
+}
 
 function addProduto(produto,quantidade,valor)
 {
@@ -58,58 +79,130 @@ function addLogin()
 {
 	if(validaLogin())
 	{
+		var req = new XMLHttpRequest();
+		var url = "../action/login.php";
+	
+		login = new Object();
+
 		var user = document.getElementById("user");
 		var senha = document.getElementById("senha");
-		
-		
 		var msg = document.getElementById("msg");
+
+		login.user=user.value;
+		login.senha=senha.value;
 		
-		createRequest();
-		
-		var url = "../action/login.php";
-		
-		var params = "";
-		params += "?user=" + user.value;
-		params += "&senha=" + senha.value;
-		
-		
-		request.open("GET", url+params, false);
-		request.onreadystatechange = function(){
-			if(request.readyState == 4) // 4 = Teve algum retorno;
+		stringJSON = JSON.stringify(login);
+
+		req.open("POST", url, false);
+		req.setRequestHeader("Content-Type","application/json");
+
+		req.onreadystatechange = function(){
+			if(req.readyState == 4) 
 			{
-				if(request.status == 200) // 200 = O retorno foi com sucesso;
+				if(req.status == 200) 
 				{
-					var result = request.responseText;
+					var result = req.responseText;
 					
-					if(result === "ok")
+					if(result == "ok")
 					{
-						
 						window.location.href = "../pags/listaClientes.php";
-			
+						
 					}
 					else{
-						msg.innerHTML = request.responseText;
+						msg.innerHTML = req.responseText;
 					}
 										
 				}
 				else{
 					msg.innerHTML = "Não foi possível adicionar os dados";
-
 				}
 			}
 			else{
 				msg.innerHTML = "Conexão falhou";
 			}
 		}
-		request.send(null);
+		req.send(stringJSON);
 		
 	}
-	else{
+}
+function validaEditaUsuario()
+{	
+	var senha_antiga = document.getElementById("senha_antiga");
+	var senha_nova = document.getElementById("senha_nova");
+	
+	var msg = document.getElementById("msg");
+	
+
+	if(senha_antiga.value == "" && senha_nova.value == ""){
+		msg.innerHTML = "Campos de senha nao preenchido";
 		return false;
 	}
+	else	
+	if(senha_antiga.value == ""){
+		msg.innerHTML = "Senha antiga não preenchida";
+		return false;
+	}
+	else
+	if(senha_nova.value == ""){
+		msg.innerHTML = "Nova senha não preenchida";
+		return false;
+	}
+	
+	
+	return true;
+	
 }
+function editaUsuario()
+{	
+	if(validaEditaUsuario())
+	{
+		var req = new XMLHttpRequest();
+		var url = "../action/editaUsuario.php";
+	
+		senha = new Object();
+		
+		var codigo = document.getElementById("codigo");
+		var senha_antiga = document.getElementById("senha_antiga");
+		var senha_nova = document.getElementById("senha_nova");
+		var msg = document.getElementById("msg");
 
+		senha.codigo = codigo.value;
+		senha.senha_antiga = senha_antiga.value;
+		senha.senha_nova = senha_nova.value;
+		
+		stringJSON = JSON.stringify(senha);
 
+		req.open("POST", url, false);
+		req.setRequestHeader("Content-Type","application/json");
+
+		req.onreadystatechange = function(){
+			if(req.readyState == 4) 
+			{
+				if(req.status == 200) 
+				{
+					var result = req.responseText;
+					
+					if(result == "ok")
+					{
+						window.location.href = "../pags/listaClientes.php";
+						
+					}
+					else{
+						msg.innerHTML = req.responseText;
+					}
+										
+				}
+				else{
+					msg.innerHTML = "Não foi possível adicionar os dados";
+				}
+			}
+			else{
+				msg.innerHTML = "Conexão falhou";
+			}
+		}
+		req.send(stringJSON);
+	}
+}
 function validaCliente()
 {	
 	var nome = document.getElementById("nome");
@@ -128,31 +221,31 @@ function validaCliente()
 	}
 	else
 	if(endereco.value == ""){
-		msg.innerHTML = "endereco não preenchida";
+		msg.innerHTML = "endereço não preenchido";
 		return false;
 	}
 
 	else
 	if(celular.value == ""){
-		msg.innerHTML = "celular nao preenchido";
+		msg.innerHTML = "celular não preenchido";
 		return false;
 	}
 	else
 	if(bairro.value == ""){
-		msg.innerHTML = "bairro nao preenchido";
+		msg.innerHTML = "bairro não preenchido";
 		return false;
 	}
 	else
 	if(cpf.value == ""){
-		msg.innerHTML = "cpf nao preenchido";
+		msg.innerHTML = "cpf não preenchido";
 		return false;
 	}
 	else
 	if(cidade.value == ""){
-		msg.innerHTML = "cidade nao preenchido";
+		msg.innerHTML = "cidade não preenchido";
 		return false;
 	}
-	else	
+		
 	
 	return true;
 }
@@ -162,6 +255,11 @@ function addCliente()
 {
 	if(validaCliente())
 	{
+		var req = new XMLHttpRequest();
+		var url = "../action/addCliente.php";
+	
+		cliente = new Object();
+
 		var nome = document.getElementById("nome");
 		var endereco = document.getElementById("endereco");
 		var numero = document.getElementById("numero");
@@ -169,39 +267,38 @@ function addCliente()
 		var bairro = document.getElementById("bairro");
 		var cpf = document.getElementById("cpf");
 		var cidade = document.getElementById("cidade");
-		var mais_informacoes = document.getElementById("mais-informacoes");
+		var mais_informacoes = document.getElementById("mais_informacoes");
 		
 		var msg = document.getElementById("msg");
+		console.log(mais_informacoes);
+		cliente.nome = nome.value;
+		cliente.endereco = endereco.value;
+		cliente.numero = numero.value;
+		cliente.celular = celular.value;
+		cliente.bairro = bairro.value;
+		cliente.cpf = cpf.value;
+		cliente.cidade = cidade.value;
+		cliente.mais_informacoes = mais_informacoes.value;
 		
-		createRequest();
+		stringJSON = JSON.stringify(cliente);
 		
-		var url = "../action/addCliente.php";
-		
-		var params = "";
-		params += "?nome=" + nome.value;
-		params += "&endereco=" + endereco.value;
-		params += "&numero=" + numero.value;
-		params += "&celular=" + celular.value;
-		params += "&bairro=" + bairro.value;
-		params += "&cpf=" + cpf.value;
-		params += "&cidade=" + cidade.value;
-		params += "&mais_informacoes=" + mais_informacoes.value;
-		
-		request.open("GET", url+params, false);
-		request.onreadystatechange = function(){
-			if(request.readyState == 4) 
+		req.open("POST", url, false);
+		req.setRequestHeader("Content-Type","application/json");
+
+		req.onreadystatechange = function(){
+			if(req.readyState == 4) 
 			{
-				if(request.status == 200) 
+				if(req.status == 200) 
 				{
-					var result = request.responseText;
+					var result = req.responseText;
 					
 					if(result == "ok")
 					{
-						msg.innerHTML = "Adicionado com sucesso!";
+						window.location.href = "../pags/listaClientes.php";
 						
 					}
 					else{
-						msg.innerHTML = request.responseText;
+						msg.innerHTML = req.responseText;
 					}
 										
 				}
@@ -213,13 +310,79 @@ function addCliente()
 				msg.innerHTML = "Conexão falhou";
 			}
 		}
-		request.send(null);
+		req.send(stringJSON);
+		
+	}
+}
+
+function atualizaCliente()
+{
+	if(validaCliente())
+	{
+		var req = new XMLHttpRequest();
+		var url = "../action/editaCliente.php";
+	
+		cliente = new Object();
+
+		var codigo = document.getElementById("codigo");
+		var nome = document.getElementById("nome");
+		var endereco = document.getElementById("endereco");
+		var numero = document.getElementById("numero");
+		var celular = document.getElementById("celular");
+		var bairro = document.getElementById("bairro");
+		var cpf = document.getElementById("cpf");
+		var cidade = document.getElementById("cidade");
+		var mais_informacoes = document.getElementById("mais_informacoes");
+		
+		var msg = document.getElementById("msg");
+
+		cliente.codigo = codigo.value;
+		cliente.nome = nome.value;
+		cliente.endereco = endereco.value;
+		cliente.numero = numero.value;
+		cliente.celular = celular.value;
+		cliente.bairro = bairro.value;
+		cliente.cpf = cpf.value;
+		cliente.cidade = cidade.value;
+		cliente.mais_informacoes = mais_informacoes.value;
+		
+		stringJSON = JSON.stringify(cliente);
+
+		req.open("POST", url, false);
+		req.setRequestHeader("Content-Type","application/json");
+
+		req.onreadystatechange = function(){
+			if(req.readyState == 4) 
+			{
+				if(req.status == 200) 
+				{
+					var result = req.responseText;
+					
+					if(result == "ok")
+					{
+						window.location.href = "../pags/listaClientes.php";
+						
+					}
+					else{
+						msg.innerHTML = req.responseText;
+					}
+										
+				}
+				else{
+					msg.innerHTML = "Não foi possível adicionar os dados";
+				}
+			}
+			else{
+				msg.innerHTML = "Conexão falhou";
+			}
+		}
+		req.send(stringJSON);
 		
 	}
 }
 
 
-function atualizaCliente()
+/*function atualizaCliente()
 {
 	createRequest();
 	
@@ -271,3 +434,4 @@ function atualizaCliente()
 	
 	request.send(null);
 }
+*/

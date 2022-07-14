@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,15 +11,16 @@
 	<script src="../js/createRequest.js"></script>
 	<script src="../js/methods.js"></script>
 </head>
-<body id="tudo">
+<body id="w">
+	<div class="corpo1">
 	<div class="corpo">
 
-	<?php 	include_once "./menu.php";?>
+		<?php 	include_once "./menu.php";?>
 
 
-		<form action="../action/addCliente.php" method="POST" onsubmit="return  validaCliente();">
+		<form action="../action/addCliente.php" method="POST">
 			<legend id="legenda"> <h1> Cadastrar Cliente </h1> </legend>
-
+		
 			<div class="form-group">
 				<label class="form-label">Nome</label>
 				<input type="text" name="nome" class="form-control" id="nome" >
@@ -28,13 +33,13 @@
 
 			<div class="row ">
 				<div class="form-group col">
-					<label class="form-label">Numero</label>
+					<label class="form-label">Número</label>
 					<input type="text" name="numero" class="form-control" id="numero">	
 				</div>
 
 				<div class="form-group col" >
 					<label class="form-label">Celular</label>
-					<input type="tel" name="celular" class="form-control" id="celular">	
+					<input type="text" name="celular" class="form-control" id="celular" size="20" maxlength="15" onkeypress="formataCelular(this)">	
 				</div>
 
 				<div class="form-group col">
@@ -51,22 +56,24 @@
 
 				<div class="form-group col">
 					<label class="form-label">CPF</label>	
-					<input type="text" name="cpf" class="form-control" id="cpf">
+					<input type="text" name="cpf" class="form-control" id="cpf" size="20" maxlength="16" onkeypress="formataCpf(this)">
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="form-label">Mais Informações</label>
-				<textarea class="form-control" aria-label="With textarea" name="mais_informacoes" id="mais_informacoes"></textarea >	
+				<input class="form-control" aria-label="With textarea" name="mais_informacoes" id="mais_informacoes"> </input >	
 			</div>
 
 			
-			<div class="form-group">	
-					<input type="submit"  name="bt" value="CADASTRAR" class="btn btn-default" id="bt" >
+			<div class="form-group mt-3">	
+				<button type="button"  name="bt"  class="btn btn-default" id="bt"  onclick=" addCliente();">CADASTRAR </button>
 			</div>
 					<span id="msg"></span>
 		</form>
+		
 	<div>
+	<div>	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

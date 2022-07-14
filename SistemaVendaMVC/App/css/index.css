@@ -1,0 +1,32 @@
+.corpo{
+	width: 1000px;
+	margin: 0 auto;
+}
+label, h1 {
+	font-family: verdana;
+	color: darkgray;
+}
+
+.icon {
+	width: 15px;
+}
+
+.area{
+	display: fixed;
+	width: 100%;
+	max-width: 350px;
+	text-align: center;
+	padding: 10px;
+	background-color: rgb(30 25 44);
+}
+#a{
+	background-color: rgb(30 25 44);
+}
+#area{
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	
+}

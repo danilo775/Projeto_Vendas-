@@ -1,0 +1,60 @@
+body{
+	background-color: rgb(30 25 44);
+	color:  rgb(30 25 44);
+}
+.corpo{
+	width: 1200px;
+	margin: 0 auto;
+	min-height: 1000px;
+}
+.corpo1{
+	width: 1250px;
+	background-color: white;
+    margin: 0 auto;
+}
+label{
+    font-weight: bold;
+    font-family: Verdana;
+}
+.x{
+	border: solid darkgray 2px;
+	background-color: rgb(25 25 25);
+	 font-weight: bold;
+}
+.nome{
+	font-family: verdana;
+	color: black;
+    text-align: center;
+    padding-top: 10px;
+}
+td{
+	border: solid black 1px;
+	
+}
+th{
+	border: solid darkgray 2px;
+	color: whitesmoke;
+	
+}
+.imgCliente{
+	width: 15px;
+	height: 15px;
+}
+
+#cor_valor{
+    color: red;
+}
+#legenda{
+    font-family: verdana;
+	color: black;
+    text-align: center;
+    padding-top: 10px;
+}
+.table{
+	color: black;
+}
+#msg{
+	color: red;	
+}
+
+

@@ -1,0 +1,42 @@
+#w{
+    background-color: rgb(30 25 44);
+}
+
+.corpo{
+	width: 1200px;
+	margin: 0 auto;
+   
+}
+.corpo1{
+	width: 1250px;
+	margin: 0 auto;
+    min-height: 1000px;
+    background-color: white;
+   
+}
+.form-group{
+    padding-top: 5px;
+    font-family: verdana;
+    color: black;
+}
+#legenda{
+    font-family: verdana;
+	color: black;
+    text-align: center;
+    padding-top: 10px;
+}
+
+#msg{
+	color: red;	
+}
+#bt{
+    margin-top: 20px;
+    color: rgb(30 25 44); 
+    border: solid darkgray 1px;
+    background-color: darkgray;
+}
+#footer{
+    justify-content: end;
+    align-items:flex-end;
+    flex-shrink: 0;
+}

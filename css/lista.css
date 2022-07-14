@@ -1,19 +1,31 @@
+body{
+	background-color: rgb(30 25 44);
+	color:  rgb(30 25 44);
+}
 .corpo{
 	width: 1200px;
 	margin: 0 auto;
+	min-height: 1000px;
+	
 }
 .corpo1{
 	width: 1250px;
-	background-color: rgb(30 25 44);
+	background-color: white;
     margin: 0 auto;
 }
 .x{
 	border: solid darkgray 2px;
 	background-color: rgb(25 25 25);
-	 font-weight: bold;
+	font-weight: bold;
 }
 td{
-	border: solid darkgray 1px;
+	border: solid black 1px;
+	
+}
+th{
+	border: solid darkgray 2px;
+	color: whitesmoke;
+	
 }
 .imgCliente{
 	width: 15px;
@@ -21,12 +33,12 @@ td{
 }
 #legenda{
     font-family: verdana;
-	color: darkgray;
+	color: black;
     text-align: center;
     padding-top: 10px;
 }
 .table{
-	color: darkgray;
+	color: black;
 }
 #msg{
 	color: red;	
@@ -55,4 +67,7 @@ td{
 	align-items: center;
 	min-height: 100vh;
 	
+}
+#totalVenda{
+	font-weight: bold;
 }

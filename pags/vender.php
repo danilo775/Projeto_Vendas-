@@ -1,5 +1,6 @@
 <?php
-	include_once "../include/conecta.php";
+		session_start();
+		include_once "../include/conecta.php";
 
 		$result = pg_query($conecta, "SELECT * FROM produto ");
 		if(!$result){

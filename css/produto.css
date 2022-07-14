@@ -1,22 +1,26 @@
-#tudo{
+#w{
     background-color: rgb(30 25 44);
 }
 
 .corpo{
-	width: 1000px;
-    height: 500px;
+	width: 1200px;
 	margin: 0 auto;
-    background-color: rgb(30 25 44);
-  
+	min-height: 1000px;
+	
+}
+.corpo1{
+	width: 1250px;
+	background-color: white;
+    margin: 0 auto;
 }
 .form-group{
     padding-top: 5px;
     font-family: verdana;
-    color: darkgray;
+    color: black;
 }
 #legenda{
     font-family: verdana;
-	color: darkgray;
+	color: black;
     text-align: center;
     padding-top: 10px;
 }
@@ -29,4 +33,9 @@
     color: rgb(30 25 44); 
     border: solid darkgray 1px;
     background-color: darkgray;
+}
+#footer{
+    justify-content: end;
+    align-items:flex-end;
+    flex-shrink: 0;
 }

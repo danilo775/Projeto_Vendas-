@@ -1,20 +1,24 @@
-#tudo{
-    background-color: rgb(30 25 44);  
-}
-
-.corpo{
-	width: 1000px;
-	margin: 0 auto;
+#w{
     background-color: rgb(30 25 44);
+}
+.corpo{
+	width: 1200px;
+	margin: 0 auto;
+	min-height: 1000px;
+}
+.corpo1{
+    width: 1250px;
+	background-color: white;
+    margin: 0 auto;
 }
 .form-group{
     padding-top: 5px;
     font-family: verdana;
-    color: darkgray;
+    color: black;
 }
 #legenda{
     font-family: verdana;
-	color: darkgray;
+	color: black;
     text-align: center;
     padding-top: 10px;
 }

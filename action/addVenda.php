@@ -1,64 +1,53 @@
 <?php 
 	session_start();
 	include_once "../include/conecta.php";
+	header("Content-Type: application/json");
+    $dados = json_decode(file_get_contents("php://input"));
+    //var_dump($dados->contem);
+    //die();
+	if(isset($dados->valor) && isset($dados->data_vencimento) && isset($dados->tipo) &&
+		isset($dados->cliente) && isset($dados->desconto)){
 
-		if(isset($_REQUEST['produto']) && isset($_REQUEST['valor']) && isset($_REQUEST['desconto'])  && isset($_REQUEST['quantidade']) 
-		 && isset($_REQUEST['data_pagamento'])  && isset($_REQUEST['tipo'])  && isset($_REQUEST['cliente']) 
-		){
-			$produto = $_REQUEST['produto'];
+		$usuario = $_SESSION['codigo'];
 
-			$valor = $_REQUEST['valor'];
-			$valor = str_replace(".", "", $valor);
-			$valor = str_replace(",", ".", $valor);
+		$dados->valor = str_replace(".", "", $dados->valor);
+		$dados->valor = str_replace(",", ".", $dados->valor);
 
-			$desconto = $_REQUEST['desconto'];
-			$valor = str_replace(".", "", $valor);
-			$valor = str_replace(",", ".", $valor);
+		$dados->desconto = str_replace(".", "", $dados->desconto);
+		$dados->desconto = str_replace(",", ".", $dados->desconto);
 
-			$quantidade = $_REQUEST['quantidade'];
-			$data_pagamento = $_REQUEST['data_pagamento'];
-			$tipo = $_REQUEST['tipo'];
-			$cliente = $_REQUEST['cliente'];
+		 // Iniciando a transacao
+		pg_query($conecta,"BEGIN");
+
+		$result = pg_query($conecta,"INSERT INTO venda (valor,data_vencimento,tipo,usuario,cliente,desconto,data_venda) VALUES ('$dados->valor', '$dados->data_vencimento', '$dados->tipo', '$usuario', '$dados->cliente', '$dados->desconto',CURRENT_DATE) RETURNING codigo");
 		
+		if($result != FALSE){
+			$linha = pg_fetch_array($result);
+			$venda = $linha["codigo"];
 			
-			$usuario = $_SESSION['codigo']; 
-
-            // Iniciando a transacao
-			pg_query("BEGIN");
-
-			// Operação 1
-			$result = pg_query("INSERT INTO venda (produto,valor,data_pagamento,tipo,usuario,cliente,data_venda) VALUES ('$produto', '$valor', '$data_pagamento', '$tipo', '$usuario', '$cliente',CURRENT_DATE) RETURNING codigo");
-	
-			// Se a operação 1 funcionar, então:
-			if($result != FALSE){
-				// Obtendo o valor do codigo passado por RETURNING
-				$linha = pg_fetch_array($result);
-				$venda = $linha["codigo"];
-
-				// Operação 2
-				$result = pg_query("INSERT INTO contem (produto,venda,quantidade,desconto) VALUES ('$produto', '$venda', '$quantidade', '$desconto')");				
-
-				// Se a operação 2 funcionar, então:
-				if($result != FALSE){
-					echo "Venda realizada";
-					pg_query("COMMIT");
+			foreach ($dados->contem as $value) {
+				$produto = $value->codigo;
+				$quantidade = $value->quantidade;
+				$result = pg_query($conecta,"INSERT INTO contem (produto,venda,quantidade) VALUES ('$produto', '$venda', '$quantidade')");	
+				if($result != FALSE)
+				{
+					pg_query($conecta,"COMMIT");
 				}
-				// Caso contrário (operação 2)
 				else{
-					pg_query("ROLLBACK");					
+					pg_query($conecta,"ROLLBACK");	
 					die("Erro ao realizar a venda");
 				}
 			}
-			// Caso contrário (operação 1)
-			else{
-				pg_query("ROLLBACK");					
-				die("Erro ao realizar a venda");
-			}
+			
 		}
 		else{
-			die("Não foram definidos os campos de validação!");
+			pg_query($conecta,"ROLLBACK");
+			die("Erro ao realizar a venda");
 		}
-
-		include "../include/desconecta.php";
-		header("Location: ../pags/listaClientes.php");
-	?>	
+	}
+	else{
+		die("Não foram definidos os campos de validação!");
+	}
+	echo "ok";
+	include "../include/desconecta.php";
+?>

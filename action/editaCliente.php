@@ -1,23 +1,15 @@
 <?php 
 	session_start();
 	include_once "../include/conecta.php";
+	header("Content-type: application/json");
+	$cliente = json_decode(file_get_contents("php://input"));
 
-	if(isset($_POST['codigo']) && isset($_POST['nome']) && isset($_POST['endereco']) && isset($_POST['numero']) && isset($_POST['celular'])
-	   && isset($_POST['bairro']) && isset($_POST['cpf']) && isset($_POST['cidade']) && isset($_POST['mais_informacoes'])){
-		$codigo = $_POST['codigo'];
-		$nome = $_POST['nome'];
-		$endereco= $_POST['endereco'];
-		$numero = $_POST['numero'];
-		$celular = $_POST['celular'];
-		$bairro = $_POST['bairro'];
-		$cpf = $_POST['cpf'];
-		$cidade = $_POST['cidade'];
-		$mais_informacoes = $_POST['mais_informacoes'];
-
+	if(isset($cliente->codigo) && isset($cliente->nome) && isset($cliente->endereco) && isset($cliente->numero) && isset($cliente->celular)
+	   && isset($cliente->bairro) && isset($cliente->cpf) && isset($cliente->cidade) && isset($cliente->mais_informacoes)){
 		
 
 		$prepare = pg_prepare($conecta,"edtCliente","UPDATE cliente SET nome =$2, endereco =$3, numero = $4, celular = $5, bairro = $6, cpf = $7, cidade =$8, mais_informacoes =$9  WHERE codigo = $1");
-		$result = pg_execute($conecta,"edtCliente", array($codigo,$nome,$endereco,$numero,$celular,$bairro,$cpf,$cidade,$mais_informacoes));
+		$result = pg_execute($conecta,"edtCliente", array($cliente->codigo,$cliente->nome,$cliente->endereco,$cliente->numero,$cliente->celular,$cliente->bairro,$cliente->cpf,$cliente->cidade,$cliente->mais_informacoes));
 
 
 	}else{
@@ -25,10 +17,6 @@
 		die("Erro ao executar: " . pg_last_error($conecta));
 	}
 	
-
-include_once "../include/desconecta.php";
-	header("Location: ../pags/listaClientes.php");
-
-
-
- ?>
+	die("ok");
+	include_once "../include/desconecta.php";
+?>

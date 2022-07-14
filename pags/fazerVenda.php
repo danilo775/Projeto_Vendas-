@@ -1,4 +1,5 @@
 <?php
+    session_start();
 	include_once "../include/conecta.php";
 
 		$result = pg_query($conecta, "SELECT * FROM produto ");
@@ -12,101 +13,112 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Vendas</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-		<link rel="stylesheet" href="css/base.css">
-        <script src="../js/createRequest.js"></script>
-	    <script src="../js/methods.js"></script>
-
+		<title>Fazer Venda</title>
+		<link rel="stylesheet" href="../css/fazerVenda.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	</head>
-	<body>
-		<div class="container">
-		
-			<form action="../action/addVenda.php" method="GET" >
-				<fieldset>
-					<legend><h1>Fazer Venda</h1></legend>
-					
-					<input type="hidden" value="<?php echo $_REQUEST['codigo'] ?>"  name="cliente" id="cliente">
-                    
-          
-                    <div class="form-group">
-                        <table class="table" id="tableProduto">
-                            <tr>
+<body id="w">
+	<div class="corpo1">
+	<div class="corpo">
+        <?php 	include_once "./menu.php";?>
+    
+        <form action="../action/addVenda.php" method="GET" >
 
-                          
-                                
-                                <th>
-                                    <label> Produto</label>
-                                    <select class="form-control"   name="produto[]" id="produto">
-                                        <?php
-                                            while($row = pg_fetch_array($result)){
-                                        ?>
-                                        <option value = "<?php echo $row['codigo'];?>"  >
-                                            <?php echo $row['descricao']; $pro = $row['descricao']; ?>
-                                        </option>
-                                        <?php } ?>				
-                                    </select> 
-                                </th>
+            <fieldset>
+                <legend id="legenda"><h1>Módulo de Vendas</h1></legend>
 
-                                <th> 
-                                        <label>Quantidade</label>
-                                        <input type="text"  class="form-control" maxlength="15" name="quantidade[]" id="quantidade">			 
-                                </th>
-
-                                <th>
-                                    <label>Valor</label>
-                                    <input type="text"  class="form-control" maxlength="15" name="valor[]" id="valor"  onkeyup="formatarMoeda(this);">	
-                                </th>
-
-                                <th>
-                                <label>Adicionar Produto</label>
-                                <input type="button" class="btn btn-default form-control" value="ADD" onclick="addProduto(produto.value,quantidade.value,valor.value)">
-                                </th>
-                                
-                            </tr>
-                            <tr >
-                                <th>Codigo</th>
-                                <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th>valor</th>
-                            </tr> 
-                          
-                           
-                        <table>    			
-					</div>
-                     <br>                             
-                   <hr>
-                   <br>                            
-                    <div class="form-group">
+                <div class="cor">         
+                    <div class="form-group mt-3">
                         <div class="row ">
                             <div class="form-group col">
-                                <label> data_pagamento</label>
-                                <input type="date" class="form-control" maxlength="15" name="data_pagamento" id="data_pagamento">
+                                <label> Data de Vencimento</label>
+                                <input type="date" class="form-control mt-2" maxlength="15" name="data_vencimento" id="data_vencimento" value='<?php echo date("Y-m-d"); ?>'>
                             </div>				
                             
                             <div class="form-group col">
                                 <label for="type">Tipo de Venda</label>
-                                <select class="form-control" maxlength="15" name="tipo" id="tipo">
+                                <select class="form-select mt-2" name="tipo" id="tipo">
                                     <option value="1">A vista</option>
                                     <option value="2">A prazo</option>
                                 </select>
                             </div>								
                         </diV>
-                        <div class=" row ">
+                        <div class=" row mt-3" >
 
                             <div class="form-group col">
-                                <label>Desconto</label>
-                                <input type="text"  class="form-control" maxlength="15" name="desconto" id="desconto"  onkeyup="formatarMoeda(this);">			
+                                <label>Sub Total</label>
+                                <input type="text" readonly class="form-control mt-2" maxlength="15" name="sub_total" id="sub_total" >			
+                            </div>
+                            <div class="form-group col">
+                                <label>Desconto Sub Total</label>
+                                <input type="text"  class="form-control mt-2" maxlength="15" name="desconto" id="desconto"  onkeyup="formatarMoeda(this);" onblur="calculaSubTotal();">			
+                            </div>
+                            <div class="form-group col">
+                                <label>Total da Venda</label>
+                                <input type="text" readonly class="form-control mt-2" maxlength="15" name="total_venda" id="total_venda">          
                             </div>
 
-                            <div class="form-group col">
-                                <input type="submit" class="btn btn-default" value="CONCLUIR VENDA">
-                                <span id="msg"></span>
-                            </div>
+                            
                         </div>   
-                   </div>			
-                </fieldset>
+                        
+                    </div>    
+                </div>	
+                
+                <input type="hidden" value="<?php echo $_REQUEST['codigo'] ?>"  name="cliente" id="cliente">
+                <div class="cor mt-4">
+                    <div class="row ">
+                        <div class="form-group col">
+                            <label> Produto</label>
+                            <select class="form-select mt-2"   name="produto" id="produto">
+                                <option value = ""  >
+                                    Selecione o Produto
+                                </option>
+                                <?php
+                                    while($row = pg_fetch_array($result)){
+                                ?>
+                                
+                                <option value = "<?php echo $row['codigo'];?>"  >
+                                    <?php echo $row['descricao'];  ?>
+                                </option>
+                                <?php } ?>				
+                            </select> 
+                        </div>
+
+                        <div class="form-group col" >
+                            <label>Quantidade</label>
+                            <input type="number"  class="form-control mt-2" maxlength="15" name="quantidade" id="quantidade">
+                        </div>
+
+                        <div class="form-group col mt-4">
+                            <button id ="bt" type="button" class="btn btn-primary btn-sm mt-2"  onclick="addProduto()" > Adicionar Produto </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="containerTabela" class="form-group mt-4 cor">
+                    <table id="table_produto" class="table">
+                        <tr>
+                            <th>Produto</th>
+                            <th>quantidade</th>
+                            <th>Valor Unitario</th>
+                            <th>Valor total</th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>     
+                <br> <br>                           
+                <div class="form-group col ">
+                            <button id ="bt" type="button" class="btn btn-primary btn-sm"  onclick="submeteFormulario()" > Concluir Venda </button>
+                            <span id="msg"></span>
+                        </div>
+              		
+            </fieldset>
         </form>
-		</div>
+        
+	</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../js/createRequest.js"></script>
+    <script src="../js/cadastraProduto.js"></script>
+    <script src="../js/venda.js"></script>
 	</body>
 </html>

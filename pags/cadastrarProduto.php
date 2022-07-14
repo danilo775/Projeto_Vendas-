@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +11,8 @@
 	<script src="../js/cadastraProduto.js"></script>
 	
 </head>
-<body id="tudo">
+<body id="w">
+	<div class="corpo1">
 	<div class="corpo">
 		<?php 	include_once "./menu.php";?>
 
@@ -16,7 +20,7 @@
 
 				<legend id="legenda"><h1>Cadastrar Produto</h1></legend>
 
-			<div class="form-group">
+			<div class="form-group mt-5">
 				<label class="form-label">Descrição</label>
 				<input type="text" name="descricao" class="form-control" id="descricao">	
 			</div>
@@ -41,12 +45,18 @@
 				<input type="text" name="quantidade" class="form-control" id="quantidade">	
 			</div>
 			
-			<div class="form-group" >	
+			<div class="form-group mt-1" >	
 			<button type="button"  name="bt"  class="btn btn-default" id="bt"  onclick=" addProduto();">CADASTRAR </button>
 			</div>
 					<span id="msg"></span>
 		</form>	
+		
 	</div>
+		<div class="mt-5">
+			<?php 	include_once "./footer.php";?>
+		</div>
+	</div>
+		
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

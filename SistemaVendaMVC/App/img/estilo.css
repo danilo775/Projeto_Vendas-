@@ -1,0 +1,50 @@
+ <?php
+ session_start();
+ include_once "../include/conecta.php";
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<link rel="stylesheet" type="text/css" href="../css/base.css">
+</head>
+<body>
+<a href="cadastrarCliente.php"> Cadastrar Cliente </a>
+	<hr>
+	<?php
+		$result = pg_query($conecta, "SELECT * FROM cliente ORDER BY nome");
+		if(!$result){
+			die("Falha ao listar livros: " . pg_last_error());
+		}
+		if(pg_num_rows($result)>0){
+	?>
+		<table class="table">
+			<tr>
+				<th>Codigo</th>
+				<th>nome</th>
+				<th>telefone</th>
+				<th>Email</th>
+			</tr>
+			<?php
+				while( $dados = pg_fetch_array($result)){		
+			?>
+				<tr>
+					<td> <?php echo $dados['codigo']; ?> </td>
+					<td> <?php echo $dados['nome']; ?> </td>
+					<td> <?php echo $dados['telefone']; ?> </td>
+					<td> <?php echo $dados['email']; ?> </td>
+					<td>
+					 <a href=""> <img src="../img/editar.png" class="imgCliente"> </a> 
+					 <a href=""> <img src="../img/deletar.png"class="imgCliente"> </a>
+					</td>
+				</tr>
+				<br>
+			</table>	
+			<?php } ?>
+		<?php }else{
+			die("Nao HA Cliente Cadastrado" . pg_last_error());
+		} ?>	
+</body>
+</html>
